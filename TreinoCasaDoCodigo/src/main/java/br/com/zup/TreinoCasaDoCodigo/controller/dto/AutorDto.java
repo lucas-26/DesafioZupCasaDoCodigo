@@ -5,6 +5,7 @@ public class AutorDto {
 	private String nome;
 	private String email;
 	private String descricao;
+	private String mensagem;
 	
 	public AutorDto() {}
 	
@@ -12,6 +13,13 @@ public class AutorDto {
 		this.nome = nome;
 		this.email = email;
 		this.descricao = descricao;
+	}
+	
+	public AutorDto(String nome, String email, String descricao, String mensagem) {
+		this.nome = nome;
+		this.email = email;
+		this.descricao = descricao;
+		this.mensagem = mensagem;
 	}
 	
 	public String getNome() {
@@ -32,7 +40,8 @@ public class AutorDto {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	
-	
 
+	public String getMensagem() {
+		return mensagem;
+	}
 }
