@@ -29,9 +29,14 @@ public class AutorController {
 	@PostMapping(value = "/cadastrarAutor")
 	public ResponseEntity<AutorDto> cadastrarAutor(@RequestBody @Valid AutorForm autorForm, UriComponentsBuilder uriBuilder){
 		Autor autor = autorForm.converter(autorForm);
+		Autor buscaEmail = autorRepositoty.findByemail(autor.getEmail());
+		if(buscaEmail != null) {
+			System.out.println("email já esta cadastrado");
+		}
+		
 		autorRepositoty.save(autor);
 		Optional<Autor> autorEncontrado = autorRepositoty.findById(autor.getId()); 
-		return ResponseEntity.ok(new AutorDto(autorEncontrado.get().getNome(), autorEncontrado.get().getEmail(), autorEncontrado.get().getDescricao()));
+		return ResponseEntity.ok(new AutorDto(autorEncontrado.get().getNome(), autorEncontrado.get().getEmail(), autorEncontrado.get().getDescricao(), "Autor Cadastrado com sucesso."));
 	}
 	
 	@GetMapping(value = "buscaAutor/{id}")

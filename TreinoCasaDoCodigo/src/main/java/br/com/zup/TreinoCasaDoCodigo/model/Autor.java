@@ -2,6 +2,7 @@ package br.com.zup.TreinoCasaDoCodigo.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +16,7 @@ public class Autor {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
+	@Column(unique = true)
 	private String email;
 	private String descricao;
 	private LocalDateTime instanteCadastrado = LocalDateTime.now();
