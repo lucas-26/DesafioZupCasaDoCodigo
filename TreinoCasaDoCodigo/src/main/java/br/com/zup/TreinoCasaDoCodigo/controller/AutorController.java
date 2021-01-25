@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.zup.TreinoCasaDoCodigo.controller.dto.AutorDto;
+import br.com.zup.TreinoCasaDoCodigo.controller.dto.ResponseDto;
 import br.com.zup.TreinoCasaDoCodigo.controller.form.AutorForm;
 import br.com.zup.TreinoCasaDoCodigo.model.Autor;
 import br.com.zup.TreinoCasaDoCodigo.repository.AutorRepository;
@@ -22,31 +23,41 @@ import br.com.zup.TreinoCasaDoCodigo.repository.AutorRepository;
 @RestController
 @RequestMapping(value = "/casaDoCodigo")
 public class AutorController {
-	
+
 	@Autowired
 	private AutorRepository autorRepositoty;
-	
+
 	@PostMapping(value = "/cadastrarAutor")
-	public ResponseEntity<AutorDto> cadastrarAutor(@RequestBody @Valid AutorForm autorForm, UriComponentsBuilder uriBuilder){
-		Autor autor = autorForm.converter(autorForm);
-		Autor buscaEmail = autorRepositoty.findByemail(autor.getEmail());
-		if(buscaEmail != null) {
-			System.out.println("email já esta cadastrado");
+	public ResponseEntity<ResponseDto> cadastrarAutor(@RequestBody @Valid AutorForm autorForm) {
+		
+		Optional<Autor> autorExiste = autorRepositoty.findByemail(autorForm.getEmail());
+		
+		if(autorExiste.isPresent()) {
+			return ResponseEntity.badRequest().body(new ResponseDto("Esse autor não pode ser cadastrado."));
 		}
 		
-		autorRepositoty.save(autor);
-		Optional<Autor> autorEncontrado = autorRepositoty.findById(autor.getId()); 
-		return ResponseEntity.ok(new AutorDto(autorEncontrado.get().getNome(), autorEncontrado.get().getEmail(), autorEncontrado.get().getDescricao(), "Autor Cadastrado com sucesso."));
+		try {
+			Autor autor = autorForm.converter(autorForm);
+			autorRepositoty.save(autor);
+			
+			Optional<Autor> autorEncontrado = autorRepositoty.findByemail(autorForm.getEmail());
+			AutorDto ResponseAuto = new AutorDto(autorEncontrado.get().getNome(), autorEncontrado.get().getEmail(), autorEncontrado.get().getDescricao());
+			return ResponseEntity.ok().body(new ResponseDto(ResponseAuto ,"Autor cadastrado com sucesso."));
+			
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(new ResponseDto("Esse autor não pode ser cadastrado."));
+		}
 	}
-	
+
 	@GetMapping(value = "buscaAutor/{id}")
-	public ResponseEntity<AutorDto> buscarAutor(@PathVariable Long id){
+	public ResponseEntity<AutorDto> buscarAutor(@PathVariable Long id) {
 		Optional<Autor> autorEncontrado = autorRepositoty.findById(id);
-		
-		if(autorEncontrado.isEmpty()) {
+
+		if (autorEncontrado.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
-			return ResponseEntity.ok(new AutorDto(autorEncontrado.get().getNome(), autorEncontrado.get().getEmail(), autorEncontrado.get().getDescricao()));
+		return ResponseEntity.ok(new AutorDto(autorEncontrado.get().getNome(), autorEncontrado.get().getEmail(),
+				autorEncontrado.get().getDescricao()));
 	}
 
 }
