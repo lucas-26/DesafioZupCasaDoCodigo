@@ -28,4 +28,6 @@ public class Categoria {
 		super();
 		this.nome = nome;
 	}
+	
+	public Categoria() {	}
 }
