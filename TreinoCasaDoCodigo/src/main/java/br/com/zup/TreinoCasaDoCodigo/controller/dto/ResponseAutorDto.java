@@ -1,6 +1,6 @@
 package br.com.zup.TreinoCasaDoCodigo.controller.dto;
 
-public class ResponseDto {
+public class ResponseAutorDto {
 
 	private AutorDto autor;
 	private String message;
@@ -14,13 +14,13 @@ public class ResponseDto {
 		return message;
 	}
 	
-	public ResponseDto(AutorDto autor, String message) {
+	public ResponseAutorDto(AutorDto autor, String message) {
 		super();
 		this.autor = autor;
 		this.message = message;
 	}
 	
-	public ResponseDto(String message) {
+	public ResponseAutorDto(String message) {
 		super();
 		this.message = message;
 	}

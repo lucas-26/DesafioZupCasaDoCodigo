@@ -9,11 +9,13 @@ import org.hibernate.validator.constraints.Length;
 import com.sun.istack.NotNull;
 
 import br.com.zup.TreinoCasaDoCodigo.model.Autor;
+import br.com.zup.TreinoCasaDoCodigo.myAnnotacion.UniqueValue;
 
 public class AutorForm {
 	
 	@NotNull @NotEmpty
 	private String nome;
+	@UniqueValue(domainClass = Autor.class, fielName = "email", message = "Não foi possivel cadastrar um autor")
 	@NotNull @NotEmpty @Email
 	private String email;
 	@NotNull @NotEmpty @Length(max = 400)

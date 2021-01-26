@@ -15,26 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.zup.TreinoCasaDoCodigo.controller.dto.AutorDto;
-import br.com.zup.TreinoCasaDoCodigo.controller.dto.ResponseDto;
+import br.com.zup.TreinoCasaDoCodigo.controller.dto.ResponseAutorDto;
 import br.com.zup.TreinoCasaDoCodigo.controller.form.AutorForm;
 import br.com.zup.TreinoCasaDoCodigo.model.Autor;
 import br.com.zup.TreinoCasaDoCodigo.repository.AutorRepository;
 
 @RestController
-@RequestMapping(value = "/casaDoCodigo")
+@RequestMapping(value = "/casaDoCodigo/Autor")
 public class AutorController {
 
 	@Autowired
 	private AutorRepository autorRepositoty;
 
-	@PostMapping(value = "/cadastrarAutor")
-	public ResponseEntity<ResponseDto> cadastrarAutor(@RequestBody @Valid AutorForm autorForm) {
-		
-		Optional<Autor> autorExiste = autorRepositoty.findByemail(autorForm.getEmail());
-		
-		if(autorExiste.isPresent()) {
-			return ResponseEntity.badRequest().body(new ResponseDto("Esse autor não pode ser cadastrado."));
-		}
+	@PostMapping(value = "/CadastrarAutor")
+	public ResponseEntity<ResponseAutorDto> cadastrarAutor(@RequestBody @Valid AutorForm autorForm) {
 		
 		try {
 			Autor autor = autorForm.converter(autorForm);
@@ -42,10 +36,10 @@ public class AutorController {
 			
 			Optional<Autor> autorEncontrado = autorRepositoty.findByemail(autorForm.getEmail());
 			AutorDto ResponseAuto = new AutorDto(autorEncontrado.get().getNome(), autorEncontrado.get().getEmail(), autorEncontrado.get().getDescricao());
-			return ResponseEntity.ok().body(new ResponseDto(ResponseAuto ,"Autor cadastrado com sucesso."));
+			return ResponseEntity.ok().body(new ResponseAutorDto(ResponseAuto ,"Autor cadastrado com sucesso."));
 			
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(new ResponseDto("Esse autor não pode ser cadastrado."));
+			return ResponseEntity.badRequest().body(new ResponseAutorDto("Esse autor não pode ser cadastrado."));
 		}
 	}
 
