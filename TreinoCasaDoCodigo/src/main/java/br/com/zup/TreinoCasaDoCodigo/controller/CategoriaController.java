@@ -19,7 +19,7 @@ import br.com.zup.TreinoCasaDoCodigo.repository.CategoriaRepository;
 
 @RestController
 @RequestMapping(value = "/casaDoCodigo/Categoria")
-public class CatogoriaController {
+public class CategoriaController {
 
 	@Autowired
 	private CategoriaRepository categoriaRepository;
@@ -33,7 +33,7 @@ public class CatogoriaController {
 			categoriaRepository.save(categoria);
 			
 			Optional<Categoria> categoriaEncontrada = categoriaRepository.findById(categoria.getId());
-			CategoriaDto categoriaResposta = new  CategoriaDto().converter(categoriaEncontrada);
+			CategoriaDto categoriaResposta = new CategoriaDto().converter(categoriaEncontrada);
 			
 			return ResponseEntity.ok().body(new ResponseCategoriaDto(categoriaResposta ,"Categoria Cadastrada com sucesso."));
 					

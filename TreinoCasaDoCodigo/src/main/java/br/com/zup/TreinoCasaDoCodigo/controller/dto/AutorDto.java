@@ -1,5 +1,7 @@
 package br.com.zup.TreinoCasaDoCodigo.controller.dto;
 
+import br.com.zup.TreinoCasaDoCodigo.model.Autor;
+
 public class AutorDto {
 	
 	private String nome;
@@ -31,7 +33,8 @@ public class AutorDto {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	
-	
 
+	public static AutorDto converter(Autor autor) {
+		return new AutorDto(autor.getNome(), autor.getEmail(), autor.getDescricao());
+	}
 }

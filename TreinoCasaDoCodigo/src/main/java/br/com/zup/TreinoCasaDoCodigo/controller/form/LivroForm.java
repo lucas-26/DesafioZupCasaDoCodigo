@@ -35,15 +35,17 @@ public class LivroForm {
 	@NotNull
 	@NotEmpty
 	@NotBlank(message = "resumo é obrigatorio e no minimo 500 caracteres")
-	@Size(min = 10)
+	@Size(max = 500)
 	private String resumo;
 	private String sumario;
 	@NotNull
 	@Min(20)
 	private BigDecimal preco;
+	@Min(value = 200)
+	private long numeroDePaginas;
 	@NotNull
-	@Min(100)
-	private Long NumeroPaginas;
+	@NotEmpty
+	private String isbn; 
 	@Future
 	@JsonFormat(pattern = "dd/MM/yyyy", shape = Shape.STRING)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -71,8 +73,12 @@ public class LivroForm {
 		return preco;
 	}
 
-	public Long getNumeroPaginas() {
-		return NumeroPaginas;
+	public long getnumeroDePaginas() {
+		return numeroDePaginas;
+	}
+	
+	public String getIsbn() {
+		return isbn;
 	}
 
 	public LocalDate getDataDePublicacao() {
@@ -94,7 +100,8 @@ public class LivroForm {
 	public LivroForm(@NotEmpty @NotBlank(message = "titulo é obrigatorio") String titulo,
 			@NotEmpty @NotBlank(message = "resumo é obrigatorio e no minimo 500 caracteres") @Length(min = 1) String resumo,
 			String sumario, @NotNull @Min(20) BigDecimal preco,
-			@NotEmpty @NotBlank(message = "O numero de página é obrigatorioe não pode ser menos que 10") @Min(100) Long numeroPaginas,
+			@Min(200) long numeroDePaginas,
+			String isbn,
 			@Future LocalDate dataDePublicacao,
 			@NotEmpty @NotBlank(message = "categoria é obrigatorio tem de estar cadastrado no sistema") Long idCategoria,
 			@NotEmpty @NotBlank(message = "Autor é obrigatorio e tem de estar cadastrado no sistema") Long idAutor) {
@@ -103,7 +110,8 @@ public class LivroForm {
 		this.resumo = resumo;
 		this.sumario = sumario;
 		this.preco = preco;
-		this.NumeroPaginas = numeroPaginas;
+		this.numeroDePaginas = numeroDePaginas;
+		this.isbn = isbn;
 		this.DataDePublicacao = dataDePublicacao;
 		this.idCategoria = idCategoria;
 		this.idAutor = idAutor;
@@ -126,6 +134,6 @@ public class LivroForm {
 		;
 
 		return new Livro(livroForm.getTitulo(), livroForm.getResumo(), livroForm.getSumario(), livroForm.getPreco(),
-				livroForm.getNumeroPaginas(), livroForm.getDataDePublicacao(), categoria, autor);
+				livroForm.getnumeroDePaginas(),livroForm.getIsbn() ,livroForm.getDataDePublicacao(), categoria, autor);
 	}
 }
