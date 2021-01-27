@@ -86,5 +86,5 @@ public class Livro {
 		this.categoria = categoria;
 		this.autor = autor;
 	}
-
+	
 }

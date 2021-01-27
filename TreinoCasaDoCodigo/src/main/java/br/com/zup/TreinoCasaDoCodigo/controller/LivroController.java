@@ -1,5 +1,6 @@
 package br.com.zup.TreinoCasaDoCodigo.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -7,6 +8,9 @@ import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +49,18 @@ public class LivroController {
 	@GetMapping("/ListaLivro/{id}")
 	public ResponseEntity<LivroDto> buscaLivroPorId(@PathVariable long id){
 		Optional<Livro> livro = livroRepository.findById(id);
-		LivroDto livroDto = new LivroDto().converter(livro, entityManager);
-		return ResponseEntity.ok().body(livroDto);
+		if(livro.isPresent()) {
+			LivroDto livroDto = new LivroDto().converter(livro, entityManager);
+			return ResponseEntity.ok().body(livroDto);
+		}
+		else {
+			return ResponseEntity.notFound().build();
+		}
 	}
+	
+	@GetMapping("/ListaTodosOsLivros")
+		public ResponseEntity<List<LivroDto>> BuscarListaDeLivros(@PageableDefault(sort = "id", direction = org.springframework.data.domain.Sort.Direction.DESC) Pageable pagincao){
+			List<Livro> livros = livroRepository.findAll();
+			return ResponseEntity.ok().body(LivroDto.converter(livros, entityManager)); 
+		}
 }
