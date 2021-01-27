@@ -21,6 +21,10 @@ public class CategoriaDto {
 
 	public CategoriaDto converter(Optional<Categoria> categoriaEncontrada) {
 		return new CategoriaDto(categoriaEncontrada.get().getNome());
+	}
+	
+	public static CategoriaDto converter(Categoria categoriaEncontrada) {
+		return new CategoriaDto(categoriaEncontrada.getNome());
 		
 	}
 	

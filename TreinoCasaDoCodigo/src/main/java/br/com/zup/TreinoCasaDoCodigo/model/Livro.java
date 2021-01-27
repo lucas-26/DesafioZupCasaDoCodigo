@@ -2,17 +2,13 @@ package br.com.zup.TreinoCasaDoCodigo.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-
-import br.com.zup.TreinoCasaDoCodigo.myAnnotacion.UniqueValue;
 
 @Entity
 public class Livro {
@@ -25,14 +21,18 @@ public class Livro {
 	private String resumo;
 	private String sumario;
 	private BigDecimal preco;
-	private Long NumeroPaginas;
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long isbn;
+	private long numeroDePaginas;
+	@Column(unique = true)
+	private String isbn;
 	private LocalDate DataDePublicacao;
 	@OneToOne
 	private Categoria categoria;
 	@OneToOne
 	private Autor autor;
+	
+	public Long getId() {
+		return Id;
+	}
 
 	public String getTitulo() {
 		return titulo;
@@ -50,11 +50,11 @@ public class Livro {
 		return preco;
 	}
 
-	public Long getNumeroPaginas() {
-		return NumeroPaginas;
+	public long getNumeroPaginas() {
+		return numeroDePaginas;
 	}
 
-	public Long getIsbn() {
+	public String getIsbn() {
 		return isbn;
 	}
 
@@ -62,7 +62,7 @@ public class Livro {
 		return DataDePublicacao;
 	}
 
-	public Categoria gedcategoria() {
+	public Categoria getcategoria() {
 		return categoria;
 	}
 
@@ -73,17 +73,18 @@ public class Livro {
 	public Livro() {
 	}
 
-	public Livro(String titulo, String resumo, String sumario, BigDecimal preco, Long numeroPaginas,
-			LocalDate dataDePublicacao, Categoria categoria, Autor autor) {
+	public Livro(String titulo, String resumo, String sumario, BigDecimal preco, long numeroDePaginas, 
+			String isbn ,LocalDate dataDePublicacao, Categoria categoria, Autor autor) {
 		super();
 		this.titulo = titulo;
 		this.resumo = resumo;
 		this.sumario = sumario;
 		this.preco = preco;
-		this.NumeroPaginas = numeroPaginas;
+		this.numeroDePaginas = numeroDePaginas;
+		this.isbn = isbn;
 		this.DataDePublicacao = dataDePublicacao;
 		this.categoria = categoria;
 		this.autor = autor;
 	}
-
+	
 }
